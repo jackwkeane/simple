@@ -12,10 +12,4 @@ fun main(args: Array<String>) {
     runApplication<SimpleApplication>(*args)
 }
 
-@RestController
-public class SimpleController {
-    @GetMapping("/helloworld")
-    fun helloWorld(): String {
-        return "Hello World"
-    }
-}
+
