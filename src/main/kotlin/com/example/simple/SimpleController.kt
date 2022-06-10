@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController
 public class SimpleController {
     @GetMapping("/helloworld")
     fun helloWorld(): String {
-        return "Hello World"
+        return "Changed Text"
     }
 }
