@@ -69,6 +69,10 @@ class SimpleControllerTest {
     }
     @Test
     fun `Successfully retrieved all JSON entries`() {
-        TODO()
+        val requestBuilder = MockMvcRequestBuilders.get("/all")
+
+        mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+
+        Mockito.verify(simpleService, Mockito.times(1)).getAll()
     }
 }
