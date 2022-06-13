@@ -1,6 +1,7 @@
 package com.example.simple.controllers
 
 import com.example.simple.models.SimpleModel
+import com.example.simple.repository.SimpleRepository
 import com.example.simple.services.SimpleService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.Before
@@ -34,6 +35,9 @@ class SimpleControllerTest {
     @MockBean
     private lateinit var simpleService: SimpleService
 
+    @MockBean
+    private lateinit var simpleRepository: SimpleRepository
+
     companion object {
 
         val id: UUID = UUID.fromString("123e4567-e89b-12d3-a456-426614174000")
@@ -58,5 +62,17 @@ class SimpleControllerTest {
         Mockito.verify(simpleService, Mockito.times(1)).add(
             body = body
         )
+    }
+    @Test
+    fun `Successfully removed by id`() {
+        TODO()
+    }
+    @Test
+    fun `Successfully retrieved all JSON entries`() {
+        val requestBuilder = MockMvcRequestBuilders.get("/all")
+
+        mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+
+        Mockito.verify(simpleService, Mockito.times(1)).getAll()
     }
 }
