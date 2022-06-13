@@ -1,10 +1,13 @@
-package com.example.simple
+package com.example.simple.services
 
+import com.example.simple.ItemNotFoundException
+import com.example.simple.models.SimpleModel
+import com.example.simple.repository.SimpleRepository
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class SimpleService (val db: SimpleRepository ){
+class SimpleService (val db: SimpleRepository){
     fun greetingService(name: String): String {
         return "Hello, $name"
     }
@@ -19,7 +22,7 @@ class SimpleService (val db: SimpleRepository ){
             Getting obj id by .findById – returns optional.
             Chaining thru > passing logic from finding Id, dealing with it not being found, removing if found.
          */
-        db.findById(UUID.fromString(id)).orElseThrow{ItemNotFoundException(id)}.let {
+        db.findById(UUID.fromString(id)).orElseThrow{ ItemNotFoundException(id) }.let {
             db.delete(it)
         }
     }
