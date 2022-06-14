@@ -64,15 +64,16 @@ class SimpleControllerTest {
         )
     }
     @Test
-    fun `Successfully removed by id`() {
-        TODO()
-    }
-    @Test
     fun `Successfully retrieved all JSON entries`() {
         val requestBuilder = MockMvcRequestBuilders.get("/all")
 
         mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
 
         Mockito.verify(simpleService, Mockito.times(1)).getAll()
+    }
+
+    @Test
+    fun `Successfully removed by id`() {
+        TODO()
     }
 }
