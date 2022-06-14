@@ -1,5 +1,6 @@
 package com.example.simple.services
 
+import com.example.simple.InvalidUpdateException
 import com.example.simple.ItemNotFoundException
 import com.example.simple.models.SimpleModel
 import com.example.simple.repository.SimpleRepository
@@ -8,14 +9,9 @@ import java.util.*
 
 @Service
 class SimpleService (val db: SimpleRepository){
-    fun greetingService(name: String): String {
-        return "Hello, $name"
-    }
-
     fun add(body: SimpleModel): SimpleModel {
         return db.save(body)
     }
-
 
     fun remove(id: String) {
         /*
@@ -24,6 +20,14 @@ class SimpleService (val db: SimpleRepository){
          */
         db.findById(UUID.fromString(id)).orElseThrow{ ItemNotFoundException(id) }.let {
             db.delete(it)
+        }
+    }
+
+    fun update(body: SimpleModel) {
+        val id = body.id ?: throw InvalidUpdateException()
+
+        return db.findById(id).orElseThrow{ ItemNotFoundException(id.toString()) }.let {
+            db.save(body)
         }
     }
 
