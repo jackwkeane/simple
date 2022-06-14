@@ -74,6 +74,26 @@ class SimpleControllerTest {
 
     @Test
     fun `Successfully removed by id`() {
-        TODO()
+        val expectedUUID = UUID.randomUUID()
+        val requestBuilder = MockMvcRequestBuilders.delete("/delete/$expectedUUID")
+
+        mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+
+        Mockito.verify(simpleService, Mockito.times(1)).remove(
+            expectedUUID.toString()
+        )
+    }
+
+    @Test
+    fun `Successfully updated by id`() {
+        val requestBuilder = MockMvcRequestBuilders.post("/update")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(body))
+
+        mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
+
+        Mockito.verify(simpleService, Mockito.times(1)).update(
+            body = body
+        )
     }
 }
