@@ -2,6 +2,7 @@ package com.example.simple.services
 
 import com.example.simple.ItemNotFoundException
 import com.example.simple.repository.SimpleRepository
+import com.example.simple.services.SimpleProducer
 import com.example.simple.services.Fixtures.getSimpleModel
 import org.junit.Assert
 import org.junit.Before
@@ -9,6 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.test.context.junit4.SpringRunner
 import java.util.*
 
@@ -19,10 +21,13 @@ class SimpleServiceTest {
 
     private lateinit var simpleRepository: SimpleRepository
 
+    private lateinit var simpleProducer: SimpleProducer
+
     @Before
     fun setup() {
+        simpleProducer = Mockito.mock(SimpleProducer::class.java)
         simpleRepository = Mockito.mock(SimpleRepository::class.java)
-        simpleService = SimpleService(simpleRepository)
+        simpleService = SimpleService(simpleRepository, simpleProducer)
     }
 
     @Test
@@ -47,6 +52,8 @@ class SimpleServiceTest {
         simpleService.remove(expected.id!!.toString())
 
         Mockito.verify(simpleRepository, Mockito.times(1)).delete(expected)
+
+        Mockito.verify(simpleProducer, Mockito.times(1)).sendMessage(null, expected.id!!)
     }
 
     @Test(expected = ItemNotFoundException::class)
