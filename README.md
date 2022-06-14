@@ -1,3 +1,4 @@
 # SimpleApplication
 ### This application was created using Spring Boot.
-This is a test - a pull request coming from a seperate branch.
+Simple application created using spring to add id/text pairs to postgres database hosted by docker. 
+All controllers and services are unit-tested. 
