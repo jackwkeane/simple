@@ -8,9 +8,16 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class SimpleService (val db: SimpleRepository){
+class SimpleService (
+    val db: SimpleRepository,
+    val simpleProducer: SimpleProducer
+){
     fun add(body: SimpleModel): SimpleModel {
-        return db.save(body)
+        val ret = db.save(body)
+
+        simpleProducer.sendMessage(ret, ret.id!!)
+
+        return ret
     }
 
     fun remove(id: String) {
@@ -18,20 +25,30 @@ class SimpleService (val db: SimpleRepository){
             Getting obj id by .findById – returns optional.
             Chaining thru > passing logic from finding Id, dealing with it not being found, removing if found.
          */
-        db.findById(UUID.fromString(id)).orElseThrow{ ItemNotFoundException(id) }.let {
+        val idToString = UUID.fromString(id)
+
+        db.findById(idToString).orElseThrow{ ItemNotFoundException(id) }.let {
             db.delete(it)
         }
+
+        simpleProducer.sendMessage(null, idToString)
     }
 
-    fun update(body: SimpleModel) {
+    fun update(body: SimpleModel): SimpleModel {
         val id = body.id ?: throw InvalidUpdateException()
 
-        return db.findById(id).orElseThrow{ ItemNotFoundException(id.toString()) }.let {
+        val ret = db.findById(id).orElseThrow{ ItemNotFoundException(id.toString()) }.let {
             db.save(body)
         }
+
+        simpleProducer.sendMessage(ret, ret.id!!)
+
+        return ret
     }
 
     fun getAll(): List<SimpleModel> {
         return db.findAll().map { it }
     }
+
+
 }
