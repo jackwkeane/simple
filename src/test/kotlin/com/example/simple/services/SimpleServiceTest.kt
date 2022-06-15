@@ -41,6 +41,8 @@ class SimpleServiceTest {
 
         Assert.assertEquals(expected, actual)
 
+        Mockito.verify(simpleProducer, Mockito.times(1)).sendMessage(expected, expected.id!!)
+
     }
 
     @Test
@@ -65,6 +67,8 @@ class SimpleServiceTest {
         simpleService.remove(expected.id!!.toString())
 
         Mockito.verify(simpleRepository, Mockito.times(0)).delete(expected)
+
+        Mockito.verify(simpleProducer, Mockito.times(0)).sendMessage(null, expected.id!!)
     }
 
     @Test
@@ -76,6 +80,8 @@ class SimpleServiceTest {
         simpleService.update(expected)
 
         Mockito.verify(simpleRepository, Mockito.times(1)).save(expected)
+
+        Mockito.verify(simpleProducer, Mockito.times(1)).sendMessage(expected, expected.id!!)
     }
 
     @Test(expected = ItemNotFoundException::class)
@@ -87,6 +93,8 @@ class SimpleServiceTest {
         simpleService.update(expected)
 
         Mockito.verify(simpleRepository, Mockito.times(0)).save(expected)
+
+        Mockito.verify(simpleProducer, Mockito.times(0)).sendMessage(null, expected.id!!)
     }
 
 }
