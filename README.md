@@ -1,7 +1,7 @@
 # SimpleApplication
 ### Created by Jack Keane on 06/14/2022
 SimpleApplication is Gradle Project in Kotlin created using Spring Boot 2.7.0.
-The application was created to better my understanding of Kotlin, Gradle Projects, Spring Boot, Docker, and working with Apache Kafka.
+The application was created to better my understanding of Kotlin, Gradle Projects, Spring Boot, Docker, and working with REST architecture, CRUD repositories, and Apache Kafka.
 
 ## Application Qualities
 The model being used here is a 'SimpleModel' consistenting of two properties: a UUID key and a String text body.
