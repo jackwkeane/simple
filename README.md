@@ -28,7 +28,7 @@ curl --location --request POST 'localhost:8080/update' \
     "text" : "Hello world...updated!"
 }'
 ```
-
+"id" is an auto-generated UUID.
 ### DELETE localhost8080/delete/{id}
 Delete mapping that accepts a String id as a path variable that will used to check if an entry in the postgres database exists with the same UUID and delete it.
 ```
@@ -45,7 +45,15 @@ curl --location --request GET 'localhost:8080/all'
 SimpleApplication implements a Kafka producer named 'SimpleProducer' to publish messages to a Kafka topic named 'simple-model-fact' as well as reads those messages with a Kafka consumer named 'KafkaConsumer'. The application makes use of the Gson API for serializing and deserializeing instances of SimpleModel.
 
 ### Runbook
-Start postgres by opening Docker and running a new Docker image of PostgreSQL and edit application.proterties to allow for a JDBC database to be locally hosted on the port shown by Docker. To start Kafka messaging, open 
+Start postgres by opening Docker and running
+```
+docker run --name postgresql \
+  -e POSTGRES_USER=myusername \
+  -e POSTGRES_PASSWORD=mypassword \
+  -p 5432:5432 \
+  -d postgres
+```
+Start kafka by opening 
 ```
 ~/r15-services-customer/resale
 ```
