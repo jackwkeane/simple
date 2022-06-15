@@ -22,5 +22,3 @@ Get mapping that returns all of the entries in the postgres database hosted by d
 
 ### Apache Kafka Implementation
 SimpleApplication implements a Kafka producer named 'SimpleProducer' to publish messages to a Kafka topic named 'simple-model-fact' as well as reads those messages with a Kafka consumer named 'KafkaConsumer'. The application makes use of the Gson API for serializing and deserializeing instances of SimpleModel.
-
-### Unit Testing

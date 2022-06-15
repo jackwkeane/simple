@@ -52,7 +52,7 @@ class SimpleControllerTest {
     }
 
     @Test
-    fun `Successfully added JSON`() {
+    fun `Successfully added entry (controller)`() {
         val requestBuilder = MockMvcRequestBuilders.post("/add")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body))
@@ -64,7 +64,7 @@ class SimpleControllerTest {
         )
     }
     @Test
-    fun `Successfully retrieved all JSON entries`() {
+    fun `Successfully retrieved all entries (controller)`() {
         val requestBuilder = MockMvcRequestBuilders.get("/all")
 
         mockMvc.perform(requestBuilder).andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
@@ -73,7 +73,7 @@ class SimpleControllerTest {
     }
 
     @Test
-    fun `Successfully removed by id`() {
+    fun `Successfully removed by id (controller)`() {
         val expectedUUID = UUID.randomUUID()
         val requestBuilder = MockMvcRequestBuilders.delete("/delete/$expectedUUID")
 
@@ -85,7 +85,7 @@ class SimpleControllerTest {
     }
 
     @Test
-    fun `Successfully updated by id`() {
+    fun `Successfully updated by id (controller)`() {
         val requestBuilder = MockMvcRequestBuilders.post("/update")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body))

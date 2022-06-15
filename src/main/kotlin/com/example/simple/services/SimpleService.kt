@@ -30,23 +30,19 @@ class SimpleService (
         simpleProducer.sendMessage(null, idFromString)
     }
 
-    fun update(body: SimpleModel): SimpleModel? {
+    fun update(body: SimpleModel): SimpleModel {
         val id = body.id ?: throw InvalidUpdateException()
 
-        val returnSimpleModel: SimpleModel?
-
-        db.findById(id).orElseThrow{ ItemNotFoundException(id.toString()) }.let {
-            returnSimpleModel = db.save(body)
+        val updatedModel = db.findById(id).orElseThrow{ ItemNotFoundException(id.toString()) }.let {
+             db.save(body)
         }
 
-        simpleProducer.sendMessage(body, id)
+        simpleProducer.sendMessage(updatedModel, updatedModel.id!!)
 
-        return returnSimpleModel
+        return updatedModel
     }
 
     fun getAll(): List<SimpleModel> {
         return db.findAll().map { it }
     }
-
-
 }
