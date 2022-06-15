@@ -1,6 +1,7 @@
 package com.example.simple.services
 
 import com.example.simple.ItemNotFoundException
+import com.example.simple.models.SimpleModel
 import com.example.simple.repository.SimpleRepository
 import com.example.simple.services.SimpleProducer
 import com.example.simple.services.Fixtures.getSimpleModel
@@ -46,7 +47,7 @@ class SimpleServiceTest {
     }
 
     @Test
-    fun `Successfully removed SimpleModel from database`(){
+    fun `Successfully removed specific instance of SimpleModel from database`(){
         val expected = getSimpleModel()
 
         Mockito.`when`(simpleRepository.findById(expected.id!!)).thenReturn(Optional.of(expected))
@@ -72,12 +73,16 @@ class SimpleServiceTest {
     }
 
     @Test
-    fun `Successfully update SimpleModel from database`(){
+    fun `Successfully update specific instance of SimpleModel from database`(){
         val expected = getSimpleModel()
 
         Mockito.`when`(simpleRepository.findById(expected.id!!)).thenReturn(Optional.of(expected))
 
-        simpleService.update(expected)
+        Mockito.`when`(simpleRepository.save(expected)).thenReturn(expected)
+
+        val actual = simpleService.update(expected)
+
+        Assert.assertEquals(expected, actual)
 
         Mockito.verify(simpleRepository, Mockito.times(1)).save(expected)
 
@@ -90,11 +95,26 @@ class SimpleServiceTest {
 
         Mockito.`when`(simpleRepository.findById(expected.id!!)).thenReturn(Optional.empty())
 
-        simpleService.update(expected)
+        val actual = simpleService.update(expected)
+
+        Assert.assertEquals(expected, actual)
 
         Mockito.verify(simpleRepository, Mockito.times(0)).save(expected)
 
         Mockito.verify(simpleProducer, Mockito.times(0)).sendMessage(null, expected.id!!)
+    }
+
+    @Test
+    fun `Successfully found all entries from database`() {
+        val expected = listOf(getSimpleModel())
+
+        Mockito.`when`(simpleRepository.findAll()).thenReturn(expected)
+
+        val actual = simpleService.getAll()
+
+        Assert.assertEquals(expected, actual)
+
+        Mockito.verify(simpleRepository, Mockito.times(1)).findAll()
     }
 
 }
