@@ -10,9 +10,8 @@ import java.io.IOException
 class SimpleConsumer {
     private val logger: Logger = LoggerFactory.getLogger(SimpleProducer::class.java)
 
-    @KafkaListener(topics = ["users"], groupId = "group_id")
+    @KafkaListener(topics = ["simple-model-fact"], groupId = "group_id")
     @Throws(IOException::class)
-
     fun consume(message: String?) {
         logger.info(String.format("#### -> Consumed message -> %s", message))
     }

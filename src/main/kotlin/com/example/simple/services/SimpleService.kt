@@ -13,37 +13,35 @@ class SimpleService (
     val simpleProducer: SimpleProducer
 ){
     fun add(body: SimpleModel): SimpleModel {
-        val ret = db.save(body)
+        val returnSimpleModel = db.save(body)
 
-        simpleProducer.sendMessage(ret, ret.id!!)
+        simpleProducer.sendMessage(returnSimpleModel, returnSimpleModel.id!!)
 
-        return ret
+        return returnSimpleModel
     }
 
     fun remove(id: String) {
-        /*
-            Getting obj id by .findById – returns optional.
-            Chaining thru > passing logic from finding Id, dealing with it not being found, removing if found.
-         */
-        val idToString = UUID.fromString(id)
+        val idFromString = UUID.fromString(id)
 
-        db.findById(idToString).orElseThrow{ ItemNotFoundException(id) }.let {
+        db.findById(idFromString).orElseThrow{ ItemNotFoundException(id) }.let {
             db.delete(it)
         }
 
-        simpleProducer.sendMessage(null, idToString)
+        simpleProducer.sendMessage(null, idFromString)
     }
 
-    fun update(body: SimpleModel): SimpleModel {
+    fun update(body: SimpleModel): SimpleModel? {
         val id = body.id ?: throw InvalidUpdateException()
 
-        val ret = db.findById(id).orElseThrow{ ItemNotFoundException(id.toString()) }.let {
-            db.save(body)
+        val returnSimpleModel: SimpleModel?
+
+        db.findById(id).orElseThrow{ ItemNotFoundException(id.toString()) }.let {
+            returnSimpleModel = db.save(body)
         }
 
-        simpleProducer.sendMessage(ret, ret.id!!)
+        simpleProducer.sendMessage(body, id)
 
-        return ret
+        return returnSimpleModel
     }
 
     fun getAll(): List<SimpleModel> {
