@@ -62,3 +62,5 @@ and inside call:
 docker-compose up
 ```
 Use post man to allow for easily making cURL requests to the database. 
+
+Docker Reference: https://raw.githubusercontent.com/confluentinc/cp-all-in-one/7.2.1-post/cp-all-in-one/docker-compose.yml 
